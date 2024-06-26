@@ -8,6 +8,7 @@ import os
 TOKEN = 'DSBOTTOKEN'
 PREFIX = '/'
 intents = discord.Intents().all()
+cwd = os.getcwd()
 bot = commands.Bot(command_prefix=PREFIX, intents=intents)
 ID_DICT = {
     'bomj_qqq': {'id': 422380131521134604, 'mp3': [
@@ -43,7 +44,6 @@ async def leave_voice(ctx):
 
 @bot.event
 async def on_voice_state_update(member: discord.Member, before: discord.VoiceState, after: discord.VoiceState):
-    
     if (before.channel is None and after.channel) or (before.channel and after.channel):
         if before.channel is None and (before.self_mute or before.self_deaf):
             ...
@@ -65,8 +65,7 @@ async def on_voice_state_update(member: discord.Member, before: discord.VoiceSta
             print(member.voice)
             await after.channel.connect()
             voice = discord.utils.get(bot.voice_clients)
-            voice.play(discord.FFmpegPCMAudio(executable="ffmpeg", source=f'/app/mp3_files/{local_dict["mp3"][randrange(len(local_dict["mp3"]))]}'))
-            # voice.play(discord.FFmpegPCMAudio(executable="/app/vendor/ffmpeg/ffmpeg", source=f'mp3_files\\{local_dict["mp3"][randrange(len(local_dict["mp3"]))]}'))
+            voice.play(discord.FFmpegPCMAudio(executable="ffmpeg", source= os.path.join(cwd, f'mp3_files/{local_dict["mp3"][randrange(len(local_dict["mp3"]))]}')))
             while voice.is_playing():
                 await asyncio.sleep(1)
             await voice.disconnect()
