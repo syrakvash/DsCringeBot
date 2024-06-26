@@ -65,8 +65,6 @@ async def on_voice_state_update(member: discord.Member, before: discord.VoiceSta
             print(member.voice)
             await after.channel.connect()
             voice = discord.utils.get(bot.voice_clients)
-            print(os.getcwd())
-            os.listdir('app')
             voice.play(discord.FFmpegPCMAudio(executable="ffmpeg", source=f'/app/mp3_files/{local_dict["mp3"][randrange(len(local_dict["mp3"]))]}'))
             # voice.play(discord.FFmpegPCMAudio(executable="/app/vendor/ffmpeg/ffmpeg", source=f'mp3_files\\{local_dict["mp3"][randrange(len(local_dict["mp3"]))]}'))
             while voice.is_playing():
