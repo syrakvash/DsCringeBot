@@ -47,7 +47,7 @@ async def on_voice_state_update(member: discord.Member, before: discord.VoiceSta
     if (before.channel is None and after.channel) or (before.channel and after.channel):
         if before.channel is None and (before.self_mute or before.self_deaf):
             ...
-        elif (after.mute or after.self_mute or after.self_deaf or after.self_stream) or (before.self_mute or before.self_deaf):
+        elif (after.mute or after.self_mute or after.self_deaf or after.self_stream) or (before.self_mute or before.self_deaf or after.self_stream):
             return
         if member.id in [
             values_list[k]
