@@ -21,9 +21,17 @@ ID_DICT = {
     'zazulnitski': {'id': 709798855067303996, 'mp3': ['ai_cringe_detection_zazulnitski.mp3']},
     'esq4444': {'id': 409394002283069440, 'mp3': ['ai_cringe_detection_esq4444.mp3']},
     '.arma2ra': {'id': 328612957263101964, 'mp3': ['ai_cringe_detection_.arma2ra.mp3']},
-    'lil_mir': {'id': 329544067400728577, 'mp3': ['ai_cringe_detection_lil_mir.mp3']},
+    'lil_mir': {'id': 329544067400728577, 'mp3': [
+        'ai_cringe_detection_lil_mir.mp3',
+        'ai_cringe_detection_lil_mir_2.mp3',
+        'ai_cringe_detection_lil_mir_3.mp3',
+        ]},
     'jj93': {'id': 312346315063558144, 'mp3': ['ai_cringe_detection_jj93.mp3']},
-    'enabla': {'id': 326032689306140673, 'mp3': ['ai_cringe_detection_enabla.mp3']},
+    'enabla': {'id': 326032689306140673, 'mp3': [
+        'ai_cringe_detection_enabla.mp3',
+        'ai_cringe_detection_enabla_2.mp3',
+        'ai_cringe_detection_enabla_3.mp3',
+        ]},
     'gipsun9': {'id': 463301653970419712, 'mp3': ['ai_cringe_detection_gipsun9.mp3']},
     }
 
@@ -47,7 +55,8 @@ async def on_voice_state_update(member: discord.Member, before: discord.VoiceSta
     if (before.channel is None and after.channel) or (before.channel and after.channel):
         if before.channel is None and (before.self_mute or before.self_deaf):
             ...
-        elif (after.mute or after.self_mute or after.self_deaf or after.self_stream) or (before.self_mute or before.self_deaf or after.self_stream):
+        elif (after.afk or after.mute or after.self_mute or after.self_deaf or after.self_stream) \
+            or (before.self_mute or before.self_deaf or after.self_stream):
             return
         if member.id in [
             values_list[k]
