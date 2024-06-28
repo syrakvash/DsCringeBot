@@ -10,17 +10,6 @@ import audio_gen as AudioGen
 
 TOKEN = 'DSBOTTOKEN'
 PREFIX = '/'
-REPLACEMYNICK = 'REPLACEMYNICK'
-BASE_TEXT = f"""Человек с ником {REPLACEMYNICK} присоединяется к голосовому чату. 
-Надо перевести ник на русский язык и придумать короткое смешное кринжовое приветствие.
-Требования к приветствию: 
-- короткое, смешное, кринжовое;
-- только одно предложение;
-- не более 4-5 слов;
-- без одинарных и двойных ковычек;
-- ник должен быть на русском языке;
-- без слова ник.
-"""
 
 intents = discord.Intents().all()
 cwd = os.getcwd()
@@ -29,7 +18,6 @@ bot = commands.Bot(command_prefix=PREFIX, intents=intents)
 @bot.event
 async def on_voice_state_update(member: discord.Member, before: discord.VoiceState, after: discord.VoiceState):
     if (before.channel is None and after.channel) or (before.channel and after.channel):
-        member.prof
         if member.bot:
             return
         if before.channel is None and (before.self_mute or before.self_deaf):
@@ -37,9 +25,7 @@ async def on_voice_state_update(member: discord.Member, before: discord.VoiceSta
         elif (after.afk or after.mute or after.self_mute or after.self_deaf or after.self_stream or after.self_video) \
             or (before.self_mute or before.self_deaf or before.self_stream or before.self_video):
             return
-        base_text = BASE_TEXT.replace(REPLACEMYNICK, member.display_name)
-        print(base_text)
-        text_to_speak = AiTextGen.generate_greetings_text(base_text)
+        text_to_speak = AiTextGen.generate_greetings_text(member.display_name)
         mp3_filename_to_speak = AudioGen.generate_audio_greeting(text_to_speak)
         # if member.id in [
         #     values_list[k]
