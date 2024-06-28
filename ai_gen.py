@@ -10,4 +10,5 @@ def generate_greetings_text(text):
         ]
     )
     message_to_return = completion.choices[0].message.content
+    print(message_to_return)
     return message_to_return

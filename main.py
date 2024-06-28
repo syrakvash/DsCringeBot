@@ -12,8 +12,10 @@ TOKEN = 'DSBOTTOKEN'
 PREFIX = '/'
 REPLACEMYNICK = 'REPLACEMYNICK'
 BASE_TEXT = f"""Человек с ником {REPLACEMYNICK} присоединяется к голосовому чату. 
-Надо перевести ник на русский язык и придумать короткое смешное кринжовое приветствие (не более 4-5 слов, одно предложение). 
-Ник в ответе должен быть на русском языке. Текст не должен содержать спецсимволов и слов: ник"""
+Надо перевести ник на русский язык и придумать короткое смешное кринжовое приветствие: 
+только одно предложение, не более 4-5 слов.  
+Текс должен быть без одинарных и двойных ковычек, без слова ник. 
+Ник в ответе должен быть на русском языке."""
 
 intents = discord.Intents().all()
 cwd = os.getcwd()
@@ -22,6 +24,7 @@ bot = commands.Bot(command_prefix=PREFIX, intents=intents)
 @bot.event
 async def on_voice_state_update(member: discord.Member, before: discord.VoiceState, after: discord.VoiceState):
     if (before.channel is None and after.channel) or (before.channel and after.channel):
+        member.prof
         if member.bot:
             return
         if before.channel is None and (before.self_mute or before.self_deaf):
@@ -30,12 +33,9 @@ async def on_voice_state_update(member: discord.Member, before: discord.VoiceSta
             or (before.self_mute or before.self_deaf or before.self_stream or before.self_video):
             return
         base_text = BASE_TEXT.replace(REPLACEMYNICK, member.display_name)
-        
         print(base_text)
         text_to_speak = AiTextGen.generate_greetings_text(base_text)
-        print(text_to_speak)
         mp3_filename_to_speak = AudioGen.generate_audio_greeting(text_to_speak)
-        print(mp3_filename_to_speak)
         # if member.id in [
         #     values_list[k]
         #     for values_list in ID_DICT.values()
@@ -49,7 +49,6 @@ async def on_voice_state_update(member: discord.Member, before: discord.VoiceSta
         #         if values_list['id'] == member.id
         #         }
         await asyncio.sleep(1)
-        print(member.voice)
         await after.channel.connect()
         voice = discord.utils.get(bot.voice_clients)
         # voice.play(discord.FFmpegPCMAudio(executable="ffmpeg", source= os.path.join(cwd, f'mp3_files/{local_dict["mp3"][randrange(len(local_dict["mp3"]))]}')))
