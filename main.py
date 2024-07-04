@@ -2,7 +2,6 @@ import discord
 from discord.ext import commands
 import asyncio
 import logging
-# from random import randrange
 import os
 
 import ai_gen as AiTextGen
@@ -37,22 +36,9 @@ async def on_voice_state_update(member: discord.Member, before: discord.VoiceSta
             member_in_voice_data.update_member(member)
         text_to_speak = AiTextGen.generate_greetings_text(member.display_name)
         mp3_filename_to_speak = AudioGen.generate_audio_greeting(text_to_speak)
-        # if member.id in [
-        #     values_list[k]
-        #     for values_list in ID_DICT.values()
-        #     for k in values_list.keys()
-        #     if k == 'id'
-        #     ]: 
-        #     local_dict = {
-        #         value_list:values_list[value_list]
-        #         for values_list in ID_DICT.values()
-        #         for value_list in values_list
-        #         if values_list['id'] == member.id
-        #         }
         await asyncio.sleep(1)
         await after.channel.connect()
         voice = discord.utils.get(bot.voice_clients)
-        # voice.play(discord.FFmpegPCMAudio(executable="ffmpeg", source= os.path.join(cwd, f'mp3_files/{local_dict["mp3"][randrange(len(local_dict["mp3"]))]}')))
         voice.play(discord.FFmpegPCMAudio(executable="ffmpeg", source=mp3_filename_to_speak))
         while voice.is_playing():
             await asyncio.sleep(1)
