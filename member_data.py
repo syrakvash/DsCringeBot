@@ -25,7 +25,7 @@ class MembersInVoiceData(SingeltonMeta):
     def add_member(self, member: discord.Member):
         member_to_add = self.members_dict.get(member.id, None)
         if not member_to_add:
-            self.members_dict[member.id] = member
+            self.members_dict[member.id]['member'] = member
 
     def get_member(self, member: discord.Member):
         member_to_return = self.members_dict.get(member.id, None)
