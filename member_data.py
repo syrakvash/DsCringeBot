@@ -15,10 +15,6 @@ class SingeltonMeta():
 class MembersInVoiceData(SingeltonMeta):
     members_dict = {}
 
-    # def __init__(self, member: discord.Member) -> None:
-    #     if member.id not in self.members_dict:
-    #         self.members_dict[member.id]['member'] = member
-
     def get_members_dict(self):
         return self.members_dict
 
