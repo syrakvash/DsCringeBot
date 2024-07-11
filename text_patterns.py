@@ -21,5 +21,5 @@ CRING_PATTERN = f"""
 Надо сгенерировать текст, который опишет, что сейчас в голосовом канале произошла кринжовая ситуация.
 Описание ситуации: {REPLACEEXTRADATA}
 Требования к тексту:
-{__BASE_REQS__.replace(__REPLACEMEWORDSCOUNT__, '7')}
+{__BASE_REQS__.replace(__REPLACEMEWORDSCOUNT__, '10')}
 """
