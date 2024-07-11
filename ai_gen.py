@@ -1,34 +1,33 @@
 from openai import OpenAI
+from enum import Enum
 import os
 
-ENV_OPEN_API_KEY = 'OPEN_API_KEY'
-REPLACEMYNICK = 'REPLACEMYNICK'
-GPT_MODEL = 'gpt-3.5-turbo'
-BASE_TEXT = f"""
-Человек с ником {REPLACEMYNICK} присоединяется к голосовому чату. 
-Надо перевести ник на русский язык и придумать приветствие.
-Требования к приветствию: 
-- короткое, 'токсичное', смешное, обидное, кринжовое;
-- только одно предложение;
-- не более 4-5 слов;
-- без одинарных и двойных ковычек;
-- ник должен быть на русском языке;
-- без слова ник.
-"""
+import text_patterns as TextPatterns
 
-def generate_greetings_text(member_nick):
+ENV_OPEN_API_KEY = 'OPEN_API_KEY'
+GPT_MODEL = 'gpt-3.5-turbo'
+PATTERNS = Enum('Patterns', 'Greeting CringeDetect')
+
+def get_ai_response_text(**kwargs):
     client = OpenAI(api_key=os.getenv(ENV_OPEN_API_KEY))
+    request_text = __generate_request_text__(**kwargs)
     completion = client.chat.completions.create(
         model=GPT_MODEL,
         messages=[
-            {'role': 'user', 'content': __generate_request_text__(member_nick)}
+            {'role': 'user', 'content': request_text}
         ]
     )
     message_to_return = completion.choices[0].message.content.strip('"')
     print(message_to_return)
     return message_to_return
 
-def __generate_request_text__(member_nick):
-    request_text = BASE_TEXT.replace(REPLACEMYNICK, member_nick)
-    print(request_text)
-    return request_text
+def __generate_request_text__(**kwargs):
+    if kwargs['pattern'] == PATTERNS.Greeting:
+        member_nick = kwargs['member_nick']
+        text_request = TextPatterns.GREETING_PATTERN.replace(TextPatterns.REPLACEMYNICK, member_nick)
+    if kwargs['pattern'] == PATTERNS.CringeDetect:
+        extra_req_data = kwargs.get('data', None)
+        text_request = TextPatterns.CRING_PATTERN.replace(TextPatterns.REPLACEEXTRADATA, '') \
+            if not extra_req_data else TextPatterns.CRING_PATTERN.replace(TextPatterns.REPLACEEXTRADATA, extra_req_data)
+    print(text_request)
+    return text_request

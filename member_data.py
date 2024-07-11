@@ -1,5 +1,9 @@
 from threading import Lock
+import time
 import discord
+
+__CRINGE_REQ_COUNT__ = 4
+__CRINGE_REQ_TIMEOUT__ = 45
 
 class SingeltonMeta():
     _instances = {}
@@ -38,3 +42,25 @@ class MembersInVoiceData(SingeltonMeta):
         member_to_remove = self.members_dict.get(member.id, None)
         if member_to_remove:
             del self.members_dict[member.id]
+
+    def cringe_request(self, member:discord.Member):
+        member_to_cringe_request = self.members_dict.get(member.id, None)
+        if member_to_cringe_request:
+            if 'cringe_req_count' not in self.members_dict[member.id]:
+                self.__reset_cringe_request__(member.id)
+            else:
+                self.members_dict[member.id]['cringe_req_count'] += 1
+            get_delta_time = time.time() - self.members_dict[member.id]['cringe_first_time']
+            cringe_req_count = self.members_dict[member.id]['cringe_req_count']
+            if cringe_req_count >= __CRINGE_REQ_COUNT__:
+                if get_delta_time < __CRINGE_REQ_TIMEOUT__:
+                    self.members_dict[member.id]['cringe_allowed'] = False
+                else:
+                    self.__reset_cringe_request__(member.id)
+                
+            return self.members_dict[member.id]['cringe_allowed']
+        
+    def __reset_cringe_request__(self, member_id):
+        self.members_dict[member_id]['cringe_req_count'] = 1
+        self.members_dict[member_id]['cringe_first_time'] = time.time()
+        self.members_dict[member_id]['cringe_allowed'] = True

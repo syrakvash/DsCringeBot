@@ -4,8 +4,11 @@ import asyncio
 import logging
 import os
 
+import discord.ext.commands
+
 import ai_gen as AiTextGen
 import audio_gen as AudioGen
+import discord.ext
 from member_data import MembersInVoiceData
 
 TOKEN = 'DSBOTTOKEN'
@@ -32,14 +35,26 @@ async def on_voice_state_update(member: discord.Member, before: discord.VoiceSta
             member_in_voice_data.add_member(member)
         else:
             member_in_voice_data.update_member(member)
-        text_to_speak = AiTextGen.generate_greetings_text(member.display_name)
-        mp3_filename_to_speak = AudioGen.generate_audio_greeting(text_to_speak)
+        text_to_speak = AiTextGen.get_ai_response_text(pattern=AiTextGen.PATTERNS.Greeting, member_nick=member.display_name)
+        mp3_filename_to_speak = AudioGen.generate_audio_from_text(AiTextGen.PATTERNS.Greeting, text_to_speak)
+        await __bot_connect_to_channel_and_play__(after.channel, mp3_filename_to_speak)
+
+@bot.command()
+async def cringe(ctx:discord.ext.commands.Context, *args):
+    author = ctx.author
+    member_in_voice_data = MembersInVoiceData()
+    member_in_voice_data.add_member(author)
+    if member_in_voice_data.cringe_request(author) and author.voice:
+        text_to_speak = AiTextGen.get_ai_response_text(pattern=AiTextGen.PATTERNS.CringeDetect, data=' '.join(args))
+        mp3_filename_to_speak = AudioGen.generate_audio_from_text(AiTextGen.PATTERNS.CringeDetect, text_to_speak)
+        await __bot_connect_to_channel_and_play__(author.voice.channel, mp3_filename_to_speak)
+
+async def __bot_connect_to_channel_and_play__(channel: discord.VoiceChannel, mp3_filename_to_speak):
+    await channel.connect()
+    voice = discord.utils.get(bot.voice_clients)
+    voice.play(discord.FFmpegPCMAudio(executable="ffmpeg", source=mp3_filename_to_speak))
+    while voice.is_playing():
         await asyncio.sleep(1)
-        await after.channel.connect()
-        voice = discord.utils.get(bot.voice_clients)
-        voice.play(discord.FFmpegPCMAudio(executable="ffmpeg", source=mp3_filename_to_speak))
-        while voice.is_playing():
-            await asyncio.sleep(1)
-        await voice.disconnect()
+    await voice.disconnect()
 
 bot.run(os.getenv(TOKEN), log_level=logging.DEBUG)
