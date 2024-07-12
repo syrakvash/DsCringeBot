@@ -3,7 +3,7 @@ import time
 import discord
 
 __CRINGE_REQ_COUNT__ = 4
-__CRINGE_REQ_TIMEOUT__ = 45
+__CRINGE_REQ_TIMEOUT__ = 80
 
 class SingeltonMeta():
     _instances = {}
