@@ -5,7 +5,7 @@ import os
 import text_patterns as TextPatterns
 
 ENV_OPEN_API_KEY = 'OPEN_API_KEY'
-GPT_MODEL = 'gpt-3.5-turbo'
+GPT_MODEL = 'gpt-4o'
 PATTERNS = Enum('Patterns', 'Greeting CringeDetect')
 
 def get_ai_response_text(**kwargs):
