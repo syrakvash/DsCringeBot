@@ -6,7 +6,7 @@ import text_patterns as TextPatterns
 
 ENV_OPEN_API_KEY = 'OPEN_API_KEY'
 GPT_MODEL = 'gpt-4o-mini'
-PATTERNS = Enum('Patterns', 'Greeting CringeDetect')
+PATTERNS = Enum('Patterns', 'Greeting CringeDetect Banned')
 
 def get_ai_response_text(**kwargs):
     client = OpenAI(api_key=os.getenv(ENV_OPEN_API_KEY))
@@ -22,6 +22,9 @@ def get_ai_response_text(**kwargs):
     return message_to_return
 
 def __generate_request_text__(**kwargs):
+    if kwargs['pattern'] == PATTERNS.Greeting:
+        member_nick = kwargs['member_nick']
+        text_request = TextPatterns.GREETING_PATTERN.replace(TextPatterns.REPLACEMYNICK, member_nick)
     if kwargs['pattern'] == PATTERNS.Greeting:
         member_nick = kwargs['member_nick']
         text_request = TextPatterns.GREETING_PATTERN.replace(TextPatterns.REPLACEMYNICK, member_nick)
