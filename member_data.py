@@ -62,7 +62,7 @@ class MembersInVoiceData(SingeltonMeta):
             return self.members_dict[member.id]['cringe_allowed']
         
     def __reset_cringe_request__(self, member_id):
-        self.members_dict[member_id]['cringe_req_count'] = 1
+        self.members_dict[member_id]['cringe_req_count'] = 0
         self.members_dict[member_id]['cringe_first_time'] = time.time()
         self.members_dict[member_id]['cringe_allowed'] = True
         print(f'Member {member_id} initialised/released from ban')
