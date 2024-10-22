@@ -25,9 +25,9 @@ def __generate_request_text__(**kwargs):
     if kwargs['pattern'] == PATTERNS.Greeting:
         member_nick = kwargs['member_nick']
         text_request = TextPatterns.GREETING_PATTERN.replace(TextPatterns.REPLACEMYNICK, member_nick)
-    if kwargs['pattern'] == PATTERNS.Greeting:
+    if kwargs['pattern'] == PATTERNS.Banned:
         member_nick = kwargs['member_nick']
-        text_request = TextPatterns.GREETING_PATTERN.replace(TextPatterns.REPLACEMYNICK, member_nick)
+        text_request = TextPatterns.BANNED_PATTERN.replace(TextPatterns.REPLACEMYNICK, member_nick)
     if kwargs['pattern'] == PATTERNS.CringeDetect:
         extra_req_data = kwargs.get('data', None)
         text_request = TextPatterns.CRING_PATTERN.replace(TextPatterns.REPLACEEXTRADATA, '') \
