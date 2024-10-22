@@ -5,6 +5,7 @@ from ai_gen import PATTERNS
 
 MP3_CRINGE_DETECT = 'crigneDetect_output.mp3'
 MP3_GREETING = 'greeting_output.mp3'
+MP3_BANNED = 'banned.mp3'
 MP3_FOLDER = 'mp3_temp'
 
 def generate_audio_from_text(pattern, text):
@@ -20,6 +21,8 @@ def __get_file_name__(pattern):
         mp3_file_name = MP3_GREETING
     if pattern == PATTERNS.CringeDetect:
         mp3_file_name = MP3_CRINGE_DETECT
+    if pattern == PATTERNS.Banned:
+        mp3_file_name = MP3_BANNED
     mp3_file_name = os.path.join(mp3_temp_dir, mp3_file_name)
     if not os.path.exists(mp3_temp_dir):
         os.mkdir(mp3_temp_dir)
