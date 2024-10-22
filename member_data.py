@@ -2,7 +2,7 @@ from threading import Lock
 import time
 import discord
 
-__CRINGE_REQ_COUNT__ = 3
+__CRINGE_REQ_COUNT__ = 4
 __CRINGE_REQ_TIMEOUT__ = 80
 
 class SingeltonMeta():
@@ -55,6 +55,7 @@ class MembersInVoiceData(SingeltonMeta):
             if cringe_req_count >= __CRINGE_REQ_COUNT__:
                 if get_delta_time < __CRINGE_REQ_TIMEOUT__:
                     self.members_dict[member.id]['cringe_allowed'] = False
+                    print(f'Member {member.id} banned, cringe reqs number: {cringe_req_count}')
                 else:
                     self.__reset_cringe_request__(member.id)
                 
@@ -64,3 +65,4 @@ class MembersInVoiceData(SingeltonMeta):
         self.members_dict[member_id]['cringe_req_count'] = 1
         self.members_dict[member_id]['cringe_first_time'] = time.time()
         self.members_dict[member_id]['cringe_allowed'] = True
+        print(f'Member {member_id} initialised/released from ban')
