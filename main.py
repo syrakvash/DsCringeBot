@@ -44,11 +44,12 @@ async def cringe(ctx:discord.ext.commands.Context, *args):
     author = ctx.author
     member_in_voice_data = MembersInVoiceData()
     member_in_voice_data.add_member(author)
-    if member_in_voice_data.cringe_request(author) and author.voice:
+    cringe_req_state = member_in_voice_data.cringe_request(author)
+    if cringe_req_state and author.voice:
         text_to_speak = AiTextGen.get_ai_response_text(pattern=AiTextGen.PATTERNS.CringeDetect, data=' '.join(args))
         mp3_filename_to_speak = AudioGen.generate_audio_from_text(AiTextGen.PATTERNS.CringeDetect, text_to_speak)
         await __bot_connect_to_channel_and_play__(author.voice.channel, mp3_filename_to_speak)
-    elif not member_in_voice_data.cringe_request(author) and author.voice:
+    elif not cringe_req_state and author.voice:
         text_to_speak = AiTextGen.get_ai_response_text(pattern=AiTextGen.PATTERNS.Banned, member_nick=author.display_name)
         mp3_filename_to_speak = AudioGen.generate_audio_from_text(AiTextGen.PATTERNS.Banned, text_to_speak)
         await __bot_connect_to_channel_and_play__(author.voice.channel, mp3_filename_to_speak)
