@@ -20,6 +20,7 @@ GREETING_PATTERN = f"""
 CRING_PATTERN = f"""
 Надо сгенерировать злую кринжовую шутку, которая опишет: {REPLACEEXTRADATA}
 Требования к тексту:
+- не про wi-fi;
 {__BASE_REQS__.replace(__REPLACEMEWORDSCOUNT__, '15')}
 """
 
