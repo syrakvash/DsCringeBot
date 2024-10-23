@@ -18,8 +18,7 @@ GREETING_PATTERN = f"""
 """
 
 CRING_PATTERN = f"""
-Надо сгенерировать злую шутку, которая опишет, что сейчас в голосовом канале произошла кринжовая ситуация.
-Описание ситуации: {REPLACEEXTRADATA}
+Надо сгенерировать шутку про: {REPLACEEXTRADATA}
 Требования к тексту:
 {__BASE_REQS__.replace(__REPLACEMEWORDSCOUNT__, '15')}
 """
