@@ -48,7 +48,7 @@ class MembersInVoiceData(SingeltonMeta):
         if member_to_remove:
             del self.members_dict[member.id]
 
-    def get_member_request_history(self, member: discord.Member, request, response):
+    def get_member_request_history(self, member: discord.Member):
         member_to_get_history = self.members_dict.get(member.id, None)
         return member_to_get_history['reqs_history']
     
