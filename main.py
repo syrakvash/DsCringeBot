@@ -32,9 +32,6 @@ async def on_voice_state_update(member: discord.Member, before: discord.VoiceSta
         elif (after.afk or after.mute or after.self_mute or after.self_deaf or after.self_stream or after.self_video) \
             or (before.self_mute or before.self_deaf or before.self_stream or before.self_video):
             return
-        # member_in_voice_data = MembersInVoiceData()
-        # if after.channel is None:
-        #     member_in_voice_data.remove_member(member)
         elif before.channel is None:
             member_in_voice_data.add_member(member)
         else:
