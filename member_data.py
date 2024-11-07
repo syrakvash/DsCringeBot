@@ -2,8 +2,8 @@ from threading import Lock
 import time
 import discord
 
-__CRINGE_REQ_COUNT__ = 3
-__CRINGE_REQ_TIMEOUT__ = 100
+__REQ_COUNT__ = 3
+__REQ_TIMEOUT__ = 100
 
 class SingeltonMeta():
     _instances = {}
@@ -25,7 +25,7 @@ class MembersInVoiceData(SingeltonMeta):
     def __init_member__(self, member: discord.Member):
         self.members_dict[member.id] = {'member': member}
         self.members_dict[member.id]['reqs_history'] = []
-        self.__reset_cringe_request__(member.id)
+        self.__reset_request_permission__(member.id)
 
     def add_member(self, member: discord.Member):
         member_to_add = self.members_dict.get(member.id, None)
@@ -59,28 +59,24 @@ class MembersInVoiceData(SingeltonMeta):
             {'role': 'assistant', 'content': response}
             ]
 
-    def check_cringe_request_allow(self, member:discord.Member):
+    def check_request_permission(self, member:discord.Member):
         member_to_cringe_request = self.members_dict.get(member.id, None)
         if member_to_cringe_request:
-            if self.members_dict[member.id]['cringe_req_count'] == 0:
-                self.members_dict[member.id]['cringe_first_time'] = time.time()
-            # if 'cringe_req_count' not in self.members_dict[member.id]:
-            #     self.__reset_cringe_request__(member.id)
-            # else:
-            self.members_dict[member.id]['cringe_req_count'] += 1
-            get_delta_time = time.time() - self.members_dict[member.id]['cringe_first_time']
-            cringe_req_count = self.members_dict[member.id]['cringe_req_count']
-            if cringe_req_count >= __CRINGE_REQ_COUNT__:
-                if get_delta_time < __CRINGE_REQ_TIMEOUT__:
-                    self.members_dict[member.id]['cringe_allowed'] = False
-                    print(f'Member {member.id} banned, cringe reqs number: {cringe_req_count}')
+            if self.members_dict[member.id]['req_count'] == 0:
+                self.members_dict[member.id]['req_first_time'] = time.time()
+            self.members_dict[member.id]['req_count'] += 1
+            get_delta_time = time.time() - self.members_dict[member.id]['req_first_time']
+            req_count = self.members_dict[member.id]['req_count']
+            if req_count >= __REQ_COUNT__:
+                if get_delta_time < __REQ_TIMEOUT__:
+                    self.members_dict[member.id]['req_permission'] = False
+                    print(f'Member {member.id} banned, reqs count: {req_count}')
                 else:
-                    self.__reset_cringe_request__(member.id)
-                
-            return self.members_dict[member.id]['cringe_allowed']
+                    self.__reset_request_permission__(member.id)
+            return self.members_dict[member.id]['req_permission']
         
-    def __reset_cringe_request__(self, member_id):
-        self.members_dict[member_id]['cringe_req_count'] = 0
-        self.members_dict[member_id]['cringe_first_time'] = time.time()
-        self.members_dict[member_id]['cringe_allowed'] = True
+    def __reset_request_permission__(self, member_id):
+        self.members_dict[member_id]['req_count'] = 0
+        self.members_dict[member_id]['req_first_time'] = time.time()
+        self.members_dict[member_id]['req_permission'] = True
         print(f'Member {member_id} initialised/released from ban')
