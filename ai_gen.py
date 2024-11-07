@@ -23,19 +23,20 @@ def get_ai_response_text(**kwargs):
     return request_text, message_to_return
 
 def __generate_request_text__(**kwargs):
-    if kwargs['pattern'] == PATTERNS.Greeting:
-        member_nick = kwargs['member_nick']
-        text_request = TextPatterns.GREETING_PATTERN.replace(TextPatterns.REPLACEMYNICK, member_nick)
-    if kwargs['pattern'] == PATTERNS.Banned:
-        member_nick = kwargs['member_nick']
-        text_request = TextPatterns.BANNED_PATTERN.replace(TextPatterns.REPLACEMYNICK, member_nick)
-    if kwargs['pattern'] == PATTERNS.Cringe:
-        extra_req_data = kwargs.get('data', None)
-        text_request = TextPatterns.CRING_PATTERN.replace(TextPatterns.REPLACEEXTRADATA, '') \
-            if not extra_req_data else TextPatterns.CRING_PATTERN.replace(TextPatterns.REPLACEEXTRADATA, extra_req_data)
-    if kwargs['pattern'] == PATTERNS.ACringe:
-        extra_req_data = kwargs.get('data', None)
-        text_request = TextPatterns.ACRING_PATTERN.replace(TextPatterns.REPLACEEXTRADATA, '') \
-            if not extra_req_data else TextPatterns.ACRING_PATTERN.replace(TextPatterns.REPLACEEXTRADATA, extra_req_data)
+    match kwargs['pattern']:
+        case PATTERNS.Greeting:
+            member_nick = kwargs['member_nick']
+            text_request = TextPatterns.GREETING_PATTERN.replace(TextPatterns.REPLACEMYNICK, member_nick)
+        case PATTERNS.Banned:
+            member_nick = kwargs['member_nick']
+            text_request = TextPatterns.BANNED_PATTERN.replace(TextPatterns.REPLACEMYNICK, member_nick)
+        case PATTERNS.Cringe:
+            extra_req_data = kwargs.get('data', None)
+            text_request = TextPatterns.CRING_PATTERN.replace(TextPatterns.REPLACEEXTRADATA, '') \
+                if not extra_req_data else TextPatterns.CRING_PATTERN.replace(TextPatterns.REPLACEEXTRADATA, extra_req_data)
+        case PATTERNS.ACringe:
+            extra_req_data = kwargs.get('data', None)
+            text_request = TextPatterns.ACRING_PATTERN.replace(TextPatterns.REPLACEEXTRADATA, '') \
+                if not extra_req_data else TextPatterns.ACRING_PATTERN.replace(TextPatterns.REPLACEEXTRADATA, extra_req_data)
     print(text_request)
     return text_request

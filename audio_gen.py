@@ -27,14 +27,6 @@ def __get_file_name__(pattern):
             mp3_file_name = MP3_ACRINGE
         case PATTERNS.Banned:
             mp3_file_name = MP3_BANNED
-    # if pattern == PATTERNS.Greeting:
-    #     mp3_file_name = MP3_GREETING
-    # if pattern == PATTERNS.Cringe:
-    #     mp3_file_name = MP3_CRINGE
-    # if pattern == PATTERNS.ACringe:
-    #     mp3_file_name = MP3_ACRINGE
-    # if pattern == PATTERNS.Banned:
-    #     mp3_file_name = MP3_BANNED
     mp3_file_name = os.path.join(mp3_temp_dir, mp3_file_name)
     if not os.path.exists(mp3_temp_dir):
         os.mkdir(mp3_temp_dir)
