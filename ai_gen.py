@@ -13,9 +13,9 @@ def get_ai_response_text(**kwargs):
     request_text = __generate_request_text__(**kwargs)
     completion = client.chat.completions.create(
         model=GPT_MODEL,
-        messages=kwargs.get('reqs_history', []).append([
+        messages=kwargs.get('reqs_history', []) + [
             {'role': 'user', 'content': request_text}
-        ])
+        ]
     )
     completion.choices
     message_to_return = completion.choices[0].message.content.strip('"')
