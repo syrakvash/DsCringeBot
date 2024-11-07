@@ -2,7 +2,7 @@ from threading import Lock
 import time
 import discord
 
-__REQ_COUNT__ = 3
+__REQ_COUNT__ = 4
 __REQ_TIMEOUT__ = 100
 
 class SingeltonMeta():
