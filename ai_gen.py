@@ -19,7 +19,7 @@ def get_ai_response_text(**kwargs):
     )
     completion.choices
     message_to_return = completion.choices[0].message.content.strip('"')
-    print(message_to_return)
+    print(message_to_return.encode('utf-8'))
     return request_text, message_to_return
 
 def __generate_request_text__(**kwargs):
@@ -37,5 +37,5 @@ def __generate_request_text__(**kwargs):
         extra_req_data = kwargs.get('data', None)
         text_request = TextPatterns.ACRING_PATTERN.replace(TextPatterns.REPLACEEXTRADATA, '') \
             if not extra_req_data else TextPatterns.ACRING_PATTERN.replace(TextPatterns.REPLACEEXTRADATA, extra_req_data)
-    print(text_request)
+    print(text_request.encode('utf-8'))
     return text_request
