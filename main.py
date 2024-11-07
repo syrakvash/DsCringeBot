@@ -35,7 +35,8 @@ async def on_voice_state_update(member: discord.Member, before: discord.VoiceSta
             member_in_voice_data.add_member(member)
         else:
             member_in_voice_data.update_member(member)
-        text_to_speak = AiTextGen.get_ai_response_text(pattern=AiTextGen.PATTERNS.Greeting, member_nick=member.display_name)
+        request, text_to_speak = AiTextGen.get_ai_response_text(pattern=AiTextGen.PATTERNS.Greeting, member_nick=member.display_name)
+        member_in_voice_data.update_member_request_history(member, request, text_to_speak)
         mp3_filename_to_speak = AudioGen.generate_audio_from_text(AiTextGen.PATTERNS.Greeting, text_to_speak)
         await __bot_connect_to_channel_and_play__(after.channel, mp3_filename_to_speak)
 
@@ -44,14 +45,31 @@ async def cringe(ctx:discord.ext.commands.Context, *args):
     author = ctx.author
     member_in_voice_data = MembersInVoiceData()
     member_in_voice_data.add_member(author)
-    cringe_req_state = member_in_voice_data.cringe_request(author)
-    if cringe_req_state and author.voice:
-        text_to_speak = AiTextGen.get_ai_response_text(pattern=AiTextGen.PATTERNS.CringeDetect, data=' '.join(args))
-        mp3_filename_to_speak = AudioGen.generate_audio_from_text(AiTextGen.PATTERNS.CringeDetect, text_to_speak)
-        await __bot_connect_to_channel_and_play__(author.voice.channel, mp3_filename_to_speak)
-    elif not cringe_req_state and author.voice:
-        text_to_speak = AiTextGen.get_ai_response_text(pattern=AiTextGen.PATTERNS.Banned, member_nick=author.display_name)
-        mp3_filename_to_speak = AudioGen.generate_audio_from_text(AiTextGen.PATTERNS.Banned, text_to_speak)
+    # cringe_req_state = member_in_voice_data.check_cringe_request_allow(author)
+    if author.voice:
+        cringe_req_state = member_in_voice_data.check_cringe_request_allow(author)
+        cringe_req_history = member_in_voice_data.get_member_request_history(author)
+        if cringe_req_state:
+            pattern = AiTextGen.PATTERNS.CringeDetect
+            request, text_to_speak = AiTextGen.get_ai_response_text(
+                pattern=pattern, 
+                data=' '.join(args), 
+                reqs_history=cringe_req_history
+                )
+            # member_in_voice_data.update_member_request_history(author, request, text_to_speak)
+            # mp3_filename_to_speak = AudioGen.generate_audio_from_text(AiTextGen.PATTERNS.CringeDetect, text_to_speak)
+            # await __bot_connect_to_channel_and_play__(author.voice.channel, mp3_filename_to_speak)
+        else:
+            pattern = AiTextGen.PATTERNS.Banned
+            request, text_to_speak = AiTextGen.get_ai_response_text(
+                pattern=pattern, 
+                member_nick=author.display_name, 
+                reqs_history=cringe_req_history
+                )
+            # mp3_filename_to_speak = AudioGen.generate_audio_from_text(AiTextGen.PATTERNS.Banned, text_to_speak)
+            # await __bot_connect_to_channel_and_play__(author.voice.channel, mp3_filename_to_speak)
+        member_in_voice_data.update_member_request_history(author, request, text_to_speak)
+        mp3_filename_to_speak = AudioGen.generate_audio_from_text(pattern, text_to_speak)
         await __bot_connect_to_channel_and_play__(author.voice.channel, mp3_filename_to_speak)
 
 async def __bot_connect_to_channel_and_play__(channel: discord.VoiceChannel, mp3_filename_to_speak):

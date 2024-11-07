@@ -13,13 +13,13 @@ def get_ai_response_text(**kwargs):
     request_text = __generate_request_text__(**kwargs)
     completion = client.chat.completions.create(
         model=GPT_MODEL,
-        messages=[
+        messages=kwargs['reqs_history'] + [
             {'role': 'user', 'content': request_text}
         ]
     )
     message_to_return = completion.choices[0].message.content.strip('"')
     print(message_to_return)
-    return message_to_return
+    return request_text, message_to_return
 
 def __generate_request_text__(**kwargs):
     if kwargs['pattern'] == PATTERNS.Greeting:
