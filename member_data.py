@@ -48,10 +48,16 @@ class MembersInVoiceData(SingeltonMeta):
     
     def update_member_request_history(self, member: discord.Member, request, response):
         member_to_update_history = self.members_dict.get(member.id, None)
-        member_to_update_history['reqs_history'] += [
+        if member_to_update_history:
+            member_to_update_history['reqs_history'] += [
             {'role': 'user', 'content': request},
             {'role': 'assistant', 'content': response}
             ]
+        else:
+            member_to_update_history = {'reqs_history' : [
+            {'role': 'user', 'content': request},
+            {'role': 'assistant', 'content': response}
+            ]}
 
     def check_request_permission(self, member:discord.Member):
         member_to_cringe_request = self.members_dict.get(member.id, None)
