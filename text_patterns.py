@@ -32,6 +32,12 @@ ACRING_PATTERN = f"""
 {__REPLACEMEWORDSCOUNTREQ__.replace(__REPLACEMEWORDSCOUNT__, '15')}
 """
 
+CLMBR_PATTERN = f"""
+Есть следующее сообщение: {REPLACEEXTRADATA}
+Добавь фразу только перед ним, будто бы это очень важно объявление.
+Требование к фразе: {__BASE_REQS__.replace(__REPLACEMEWORDSCOUNT__, '10')}
+"""
+
 BANNED_PATTERN = f"""
 Человек с ником {REPLACEMYNICK} забанен в голосовом чате. 
 Надо перевести ник на русский язык и придумать злую кринжовую шутку, что этот человек забанен.

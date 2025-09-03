@@ -6,7 +6,7 @@ import text_patterns as TextPatterns
 
 ENV_OPEN_API_KEY = 'OPEN_API_KEY'
 GPT_MODEL = 'gpt-4o-mini'
-PATTERNS = Enum('Patterns', 'Greeting Cringe ACringe Banned')
+PATTERNS = Enum('Patterns', 'Greeting Cringe ACringe Clmbr Banned')
 
 def get_ai_response_text(**kwargs):
     client = OpenAI(api_key=os.getenv(ENV_OPEN_API_KEY))
@@ -33,6 +33,10 @@ def __generate_request_text__(**kwargs):
         case PATTERNS.Cringe:
             extra_req_data = kwargs.get('data', None)
             text_request = TextPatterns.CRING_PATTERN.replace(TextPatterns.REPLACEEXTRADATA, '') \
+                if not extra_req_data else TextPatterns.CRING_PATTERN.replace(TextPatterns.REPLACEEXTRADATA, extra_req_data)
+        case PATTERNS.Clmbr:
+            extra_req_data = kwargs.get('data', None)
+            text_request = TextPatterns.CLMBR_PATTERN.replace(TextPatterns.REPLACEEXTRADATA, '') \
                 if not extra_req_data else TextPatterns.CRING_PATTERN.replace(TextPatterns.REPLACEEXTRADATA, extra_req_data)
         case PATTERNS.ACringe:
             extra_req_data = kwargs.get('data', None)
