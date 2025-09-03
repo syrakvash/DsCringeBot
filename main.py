@@ -37,14 +37,14 @@ async def on_voice_state_update(member: discord.Member, before: discord.VoiceSta
         request, text_to_speak = AiTextGen.get_ai_response_text(pattern=AiTextGen.Patterns.GREETING, member_nick=member.display_name)
         member_in_voice_data.update_member_request_history(member, request, text_to_speak)
         mp3_filename_to_speak = AudioGen.generate_audio_from_text(AiTextGen.Patterns.GREETING, text_to_speak)
-        await __bot_connect_to_channel_and_play__(after.channel, mp3_filename_to_speak)
+        await _bot_connect_to_channel_and_play(after.channel, mp3_filename_to_speak)
 
 @bot.command()
-async def clmbr(ctx:discord.ext.commands.Context, *args):
+async def clmbr(ctx: discord.ext.commands.Context, *args):
     _txt_commands(
         command=AiTextGen.Patterns.CLMR,
         ctx=ctx,
-        args = args
+        *args
     )
     # author = ctx.author
     # member_in_voice_data = MembersInVoiceData()
@@ -71,11 +71,11 @@ async def clmbr(ctx:discord.ext.commands.Context, *args):
     #     await __bot_connect_to_channel_and_play__(author.voice.channel, mp3_filename_to_speak)
 
 @bot.command()
-async def cringe(ctx:discord.ext.commands.Context, *args):
+async def cringe(ctx: discord.ext.commands.Context, *args):
     _txt_commands(
         command=AiTextGen.Patterns.CRINGE,
         ctx=ctx,
-        args = args
+        *args
     )
     # author = ctx.author
     # member_in_voice_data = MembersInVoiceData()
@@ -102,11 +102,11 @@ async def cringe(ctx:discord.ext.commands.Context, *args):
     #     await __bot_connect_to_channel_and_play__(author.voice.channel, mp3_filename_to_speak)
 
 @bot.command()
-async def acringe(ctx:discord.ext.commands.Context, *args):
+async def acringe(ctx: discord.ext.commands.Context, *args):
     _txt_commands(
         command=AiTextGen.Patterns.ACRINGE,
         ctx=ctx,
-        args = args
+        *args
     )
     # author = ctx.author
     # member_in_voice_data = MembersInVoiceData()
@@ -155,9 +155,9 @@ async def _txt_commands(command: AiTextGen.Patterns, ctx:discord.ext.commands.Co
                 )
         member_in_voice_data.update_member_request_history(author, request, text_to_speak)
         mp3_filename_to_speak = AudioGen.generate_audio_from_text(pattern, text_to_speak)
-        await __bot_connect_to_channel_and_play__(author.voice.channel, mp3_filename_to_speak)
+        await _bot_connect_to_channel_and_play(author.voice.channel, mp3_filename_to_speak)
 
-async def __bot_connect_to_channel_and_play__(channel: discord.VoiceChannel, mp3_filename_to_speak):
+async def _bot_connect_to_channel_and_play(channel: discord.VoiceChannel, mp3_filename_to_speak):
     await channel.connect()
     voice = discord.utils.get(bot.voice_clients)
     voice.play(discord.FFmpegPCMAudio(executable="ffmpeg", source=mp3_filename_to_speak))
