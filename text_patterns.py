@@ -33,9 +33,9 @@ ACRING_PATTERN = f"""
 """
 
 CLMBR_PATTERN = f"""
-Есть следующее сообщение: {REPLACEEXTRADATA}
-Добавь фразу только перед ним, будто бы это очень важно объявление.
+Добавь фразу к сообщению, как будто это очень важно объявление.
 Требование к фразе: {__BASE_REQS__.replace(__REPLACEMEWORDSCOUNT__, '5')}
+Сообщение: {REPLACEEXTRADATA}
 """
 
 BANNED_PATTERN = f"""
