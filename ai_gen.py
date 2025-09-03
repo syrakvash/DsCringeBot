@@ -37,7 +37,7 @@ def __generate_request_text__(**kwargs):
         case PATTERNS.Clmbr:
             extra_req_data = kwargs.get('data', None)
             text_request = TextPatterns.CLMBR_PATTERN.replace(TextPatterns.REPLACEEXTRADATA, '') \
-                if not extra_req_data else TextPatterns.CRING_PATTERN.replace(TextPatterns.REPLACEEXTRADATA, extra_req_data)
+                if not extra_req_data else TextPatterns.CLMBR_PATTERN.replace(TextPatterns.REPLACEEXTRADATA, extra_req_data)
         case PATTERNS.ACringe:
             extra_req_data = kwargs.get('data', None)
             text_request = TextPatterns.ACRING_PATTERN.replace(TextPatterns.REPLACEEXTRADATA, '') \
