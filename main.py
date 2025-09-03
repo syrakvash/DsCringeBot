@@ -41,11 +41,7 @@ async def on_voice_state_update(member: discord.Member, before: discord.VoiceSta
 
 @bot.command()
 async def clmbr(ctx: discord.ext.commands.Context, *args):
-    _txt_commands(
-        command=AiTextGen.Patterns.CLMR,
-        ctx=ctx,
-        *args
-    )
+    _txt_commands(AiTextGen.Patterns.CLMR, ctx, *args)
     # author = ctx.author
     # member_in_voice_data = MembersInVoiceData()
     # member_in_voice_data.add_member(author)
@@ -72,11 +68,7 @@ async def clmbr(ctx: discord.ext.commands.Context, *args):
 
 @bot.command()
 async def cringe(ctx: discord.ext.commands.Context, *args):
-    _txt_commands(
-        command=AiTextGen.Patterns.CRINGE,
-        ctx=ctx,
-        *args
-    )
+    _txt_commands(AiTextGen.Patterns.CRINGE, ctx, *args)
     # author = ctx.author
     # member_in_voice_data = MembersInVoiceData()
     # member_in_voice_data.add_member(author)
@@ -103,11 +95,7 @@ async def cringe(ctx: discord.ext.commands.Context, *args):
 
 @bot.command()
 async def acringe(ctx: discord.ext.commands.Context, *args):
-    _txt_commands(
-        command=AiTextGen.Patterns.ACRINGE,
-        ctx=ctx,
-        *args
-    )
+    _txt_commands(AiTextGen.Patterns.ACRINGE, ctx, *args)
     # author = ctx.author
     # member_in_voice_data = MembersInVoiceData()
     # member_in_voice_data.add_member(author)
