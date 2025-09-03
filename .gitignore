@@ -1,6 +1,9 @@
 # Project files
 mp3_temp
 
+# VS Code
+.vscode
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
