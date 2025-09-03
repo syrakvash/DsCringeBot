@@ -34,9 +34,9 @@ async def on_voice_state_update(member: discord.Member, before: discord.VoiceSta
             return
         else:
             member_in_voice_data.update_member(member)
-        request, text_to_speak = AiTextGen.get_ai_response_text(pattern=AiTextGen.PATTERNS.Greeting, member_nick=member.display_name)
+        request, text_to_speak = AiTextGen.get_ai_response_text(pattern=AiTextGen.Patterns.GREETING, member_nick=member.display_name)
         member_in_voice_data.update_member_request_history(member, request, text_to_speak)
-        mp3_filename_to_speak = AudioGen.generate_audio_from_text(AiTextGen.PATTERNS.Greeting, text_to_speak)
+        mp3_filename_to_speak = AudioGen.generate_audio_from_text(AiTextGen.Patterns.GREETING, text_to_speak)
         await __bot_connect_to_channel_and_play__(after.channel, mp3_filename_to_speak)
 
 @bot.command()
@@ -48,14 +48,14 @@ async def clmbr(ctx:discord.ext.commands.Context, *args):
         req_permission = member_in_voice_data.check_request_permission(author)
         req_history = member_in_voice_data.get_member_request_history(author)
         if req_permission:
-            pattern = AiTextGen.PATTERNS.Clmbr
+            pattern = AiTextGen.Patterns.CLMR
             request, text_to_speak = AiTextGen.get_ai_response_text(
                 pattern=pattern, 
                 data=' '.join(args), 
                 reqs_history=req_history
                 )
         else:
-            pattern = AiTextGen.PATTERNS.Banned
+            pattern = AiTextGen.Patterns.BANNED
             request, text_to_speak = AiTextGen.get_ai_response_text(
                 pattern=pattern, 
                 member_nick=author.display_name, 
@@ -74,14 +74,14 @@ async def cringe(ctx:discord.ext.commands.Context, *args):
         req_permission = member_in_voice_data.check_request_permission(author)
         req_history = member_in_voice_data.get_member_request_history(author)
         if req_permission:
-            pattern = AiTextGen.PATTERNS.Cringe
+            pattern = AiTextGen.Patterns.CRINGE
             request, text_to_speak = AiTextGen.get_ai_response_text(
                 pattern=pattern, 
                 data=' '.join(args), 
                 reqs_history=req_history
                 )
         else:
-            pattern = AiTextGen.PATTERNS.Banned
+            pattern = AiTextGen.Patterns.BANNED
             request, text_to_speak = AiTextGen.get_ai_response_text(
                 pattern=pattern, 
                 member_nick=author.display_name, 
@@ -100,14 +100,14 @@ async def acringe(ctx:discord.ext.commands.Context, *args):
         req_permission = member_in_voice_data.check_request_permission(author)
         req_history = member_in_voice_data.get_member_request_history(author)
         if req_permission:
-            pattern = AiTextGen.PATTERNS.ACringe
+            pattern = AiTextGen.Patterns.ACRINGE
             request, text_to_speak = AiTextGen.get_ai_response_text(
                 pattern=pattern, 
                 data=' '.join(args), 
                 reqs_history=req_history
                 )
         else:
-            pattern = AiTextGen.PATTERNS.Banned
+            pattern = AiTextGen.Patterns.BANNED
             request, text_to_speak = AiTextGen.get_ai_response_text(
                 pattern=pattern, 
                 member_nick=author.display_name, 

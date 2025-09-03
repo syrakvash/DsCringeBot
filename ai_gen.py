@@ -6,7 +6,13 @@ import text_patterns as TextPatterns
 
 ENV_OPEN_API_KEY = 'OPEN_API_KEY'
 GPT_MODEL = 'gpt-4o-mini'
-PATTERNS = Enum('Patterns', 'Greeting Cringe ACringe Clmbr Banned')
+
+class Patterns(Enum):
+    GREETING = "Greeting"
+    CRINGE = "Cringe"
+    ACRINGE = "ACringe"
+    CLMR = "Clmbr"
+    BANNED = "Banned"
 
 def get_ai_response_text(**kwargs):
     client = OpenAI(api_key=os.getenv(ENV_OPEN_API_KEY))
@@ -24,21 +30,21 @@ def get_ai_response_text(**kwargs):
 
 def __generate_request_text__(**kwargs):
     match kwargs['pattern']:
-        case PATTERNS.Greeting:
+        case Patterns.GREETING:
             member_nick = kwargs['member_nick']
             text_request = TextPatterns.GREETING_PATTERN.replace(TextPatterns.REPLACEMYNICK, member_nick)
-        case PATTERNS.Banned:
+        case Patterns.BANNED:
             member_nick = kwargs['member_nick']
             text_request = TextPatterns.BANNED_PATTERN.replace(TextPatterns.REPLACEMYNICK, member_nick)
-        case PATTERNS.Cringe:
+        case Patterns.CRINGE:
             extra_req_data = kwargs.get('data', None)
             text_request = TextPatterns.CRING_PATTERN.replace(TextPatterns.REPLACEEXTRADATA, '') \
                 if not extra_req_data else TextPatterns.CRING_PATTERN.replace(TextPatterns.REPLACEEXTRADATA, extra_req_data)
-        case PATTERNS.Clmbr:
+        case Patterns.CLMR:
             extra_req_data = kwargs.get('data', None)
             text_request = TextPatterns.CLMBR_PATTERN.replace(TextPatterns.REPLACEEXTRADATA, '') \
                 if not extra_req_data else TextPatterns.CLMBR_PATTERN.replace(TextPatterns.REPLACEEXTRADATA, extra_req_data)
-        case PATTERNS.ACringe:
+        case Patterns.ACRINGE:
             extra_req_data = kwargs.get('data', None)
             text_request = TextPatterns.ACRING_PATTERN.replace(TextPatterns.REPLACEEXTRADATA, '') \
                 if not extra_req_data else TextPatterns.ACRING_PATTERN.replace(TextPatterns.REPLACEEXTRADATA, extra_req_data)
