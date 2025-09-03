@@ -48,7 +48,7 @@ async def clmbr(ctx:discord.ext.commands.Context, *args):
         req_permission = member_in_voice_data.check_request_permission(author)
         req_history = member_in_voice_data.get_member_request_history(author)
         if req_permission:
-            pattern = AiTextGen.PATTERNS.Cringe
+            pattern = AiTextGen.PATTERNS.Clmbr
             request, text_to_speak = AiTextGen.get_ai_response_text(
                 pattern=pattern, 
                 data=' '.join(args), 
