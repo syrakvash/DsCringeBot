@@ -4,6 +4,7 @@ import asyncio
 import logging
 import os
 import random
+import datetime
 
 import discord.ext.commands
 
@@ -65,32 +66,43 @@ async def _txt_commands(command: AiTextGen.Patterns, ctx:discord.ext.commands.Co
         req_permission = member_in_voice_data.check_request_permission(author)
         req_history = member_in_voice_data.get_member_request_history(author)
         if req_permission:
-            pattern = command
-            if pattern == AiTextGen.Patterns.STICK:
+            if command == AiTextGen.Patterns.STICK:
                 args = [lucky_member.name]
             request, text_to_speak = AiTextGen.get_ai_response_text(
-                pattern=pattern, 
+                pattern=command, 
                 data=' '.join(args), 
                 reqs_history=req_history
                 )
         else:
-            pattern = AiTextGen.Patterns.BANNED
+            command = AiTextGen.Patterns.BANNED
             request, text_to_speak = AiTextGen.get_ai_response_text(
-                pattern=pattern, 
+                pattern=command, 
                 member_nick=author.display_name, 
                 reqs_history=req_history
                 )
         member_in_voice_data.update_member_request_history(author, request, text_to_speak)
-        mp3_filename_to_speak = AudioGen.generate_audio_from_text(pattern, text_to_speak)
+        mp3_filename_to_speak = AudioGen.generate_audio_from_text(command, text_to_speak)
         await _bot_connect_to_channel_and_play(author.voice.channel, mp3_filename_to_speak)
-        if pattern == AiTextGen.Patterns.STICK:
+        if command == AiTextGen.Patterns.STICK:
             await _kick_lucky_random(lucky_member)
 
 def _get_a_lucky_random(channel: discord.VoiceChannel) -> discord.Member:
     return random.choice(channel.members)
 
-async def _kick_lucky_random(member: discord.Member):
-    await member.move_to(None)
+async def _kick_lucky_random(member: discord.Member, ctx: discord.ext.commands.Context):
+    accessible_channels = []
+    for channel in ctx.guild.voice_channels:
+        perms = channel.permissions_for(member)
+        if perms.connect:
+            accessible_channels.append(channel)
+            
+    punishments = [
+        lambda: member.timeout(datetime.timedelta(seconds=10)),
+        lambda: member.move_to(random.choice(accessible_channels)),
+        lambda: member.move_to(None)
+    ]
+    rnd_punish = random.choice(punishments)
+    await rnd_punish()
     
 async def _bot_connect_to_channel_and_play(channel: discord.VoiceChannel, mp3_filename_to_speak):
     await channel.connect()
