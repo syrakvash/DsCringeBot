@@ -91,6 +91,7 @@ async def _txt_commands(command: AiTextGen.Patterns, interaction: discord.Intera
         await _bot_connect_to_channel_and_play(author.voice.channel, mp3_filename_to_speak)
         if command == AiTextGen.Patterns.STICK:
             await _kick_lucky_random(lucky_member, interaction)
+    await interaction.response.send_message(text)
 
 # async def _txt_commands(command: AiTextGen.Patterns, ctx:discord.ext.commands.Context, *args):
 #     author = ctx.author
