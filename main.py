@@ -64,6 +64,7 @@ async def clmbr(interaction: discord.Interaction, text: str):
 #     await _txt_commands(AiTextGen.Patterns.ACRINGE, ctx, *args)
 
 async def _txt_commands(command: AiTextGen.Patterns, interaction: discord.Interaction, text: str):
+    await interaction.response.send_message(text)
     author = interaction.user
     member_in_voice_data = MembersInVoiceData()
     member_in_voice_data.add_member(author)
@@ -91,7 +92,6 @@ async def _txt_commands(command: AiTextGen.Patterns, interaction: discord.Intera
         await _bot_connect_to_channel_and_play(author.voice.channel, mp3_filename_to_speak)
         if command == AiTextGen.Patterns.STICK:
             await _kick_lucky_random(lucky_member, interaction)
-    await interaction.response.send_message(text)
 
 # async def _txt_commands(command: AiTextGen.Patterns, ctx:discord.ext.commands.Context, *args):
 #     author = ctx.author
