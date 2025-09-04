@@ -6,9 +6,10 @@ from ai_gen import Patterns
 mp3_file_name_dict = {
     Patterns.CRINGE: 'cringe_output.mp3',
     Patterns.ACRINGE: 'acringe_output.mp3',
-    Patterns.CLMR: 'clmbr_output.mp3',
+    Patterns.CLMBR: 'clmbr_output.mp3',
     Patterns.GREETING: 'greeting_output.mp3',
-    Patterns.BANNED: 'banned.mp3'
+    Patterns.BANNED: 'banned.mp3',
+    Patterns.STICK: 'stick.mp3',
 }
 
 MP3_FOLDER = 'mp3_temp'

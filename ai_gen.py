@@ -11,8 +11,9 @@ class Patterns(Enum):
     GREETING = "Greeting"
     CRINGE = "Cringe"
     ACRINGE = "ACringe"
-    CLMR = "Clmbr"
+    CLMBR = "Clmbr"
     BANNED = "Banned"
+    STICK = "Stick"
 
 def get_ai_response_text(**kwargs):
     client = OpenAI(api_key=os.getenv(ENV_OPEN_API_KEY))
@@ -23,7 +24,6 @@ def get_ai_response_text(**kwargs):
             {'role': 'user', 'content': request_text}
         ]
     )
-    completion.choices
     message_to_return = completion.choices[0].message.content.strip('"')
     print(message_to_return)
     return request_text, message_to_return
@@ -40,7 +40,7 @@ def __generate_request_text__(**kwargs):
             extra_req_data = kwargs.get('data', None)
             text_request = TextPatterns.CRING_PATTERN.replace(TextPatterns.REPLACEEXTRADATA, '') \
                 if not extra_req_data else TextPatterns.CRING_PATTERN.replace(TextPatterns.REPLACEEXTRADATA, extra_req_data)
-        case Patterns.CLMR:
+        case Patterns.CLMBR:
             extra_req_data = kwargs.get('data', None)
             text_request = TextPatterns.CLMBR_PATTERN.replace(TextPatterns.REPLACEEXTRADATA, '') \
                 if not extra_req_data else TextPatterns.CLMBR_PATTERN.replace(TextPatterns.REPLACEEXTRADATA, extra_req_data)
@@ -48,5 +48,9 @@ def __generate_request_text__(**kwargs):
             extra_req_data = kwargs.get('data', None)
             text_request = TextPatterns.ACRING_PATTERN.replace(TextPatterns.REPLACEEXTRADATA, '') \
                 if not extra_req_data else TextPatterns.ACRING_PATTERN.replace(TextPatterns.REPLACEEXTRADATA, extra_req_data)
+        case Patterns.STICK:
+            extra_req_data = kwargs.get('data', None)
+            text_request = TextPatterns.STICK_PATTERN.replace(TextPatterns.REPLACEEXTRADATA, '') \
+                if not extra_req_data else TextPatterns.STICK_PATTERN.replace(TextPatterns.REPLACEEXTRADATA, extra_req_data)
     print(text_request)
     return text_request
