@@ -50,8 +50,8 @@ async def stick(interaction: discord.Interaction):
     await _txt_commands(AiTextGen.Patterns.STICK, interaction)
 
 @bot.tree.command(name='clmbr', description='calambur announcement')
-async def clmbr(interaction: discord.Interaction, *args):
-    await _txt_commands(AiTextGen.Patterns.CLMR, interaction, *args)
+async def clmbr(interaction: discord.Interaction, text: str):
+    await _txt_commands(AiTextGen.Patterns.CLMR, interaction, text)
 
 # @bot.command()
 # async def cringe(ctx: discord.ext.commands.Context, *args):
@@ -61,7 +61,7 @@ async def clmbr(interaction: discord.Interaction, *args):
 # async def acringe(ctx: discord.ext.commands.Context, *args):
 #     await _txt_commands(AiTextGen.Patterns.ACRINGE, ctx, *args)
 
-async def _txt_commands(command: AiTextGen.Patterns, interaction: discord.Interaction, *args):
+async def _txt_commands(command: AiTextGen.Patterns, interaction: discord.Interaction, text: str):
     author = interaction.user
     member_in_voice_data = MembersInVoiceData()
     member_in_voice_data.add_member(author)
@@ -71,10 +71,10 @@ async def _txt_commands(command: AiTextGen.Patterns, interaction: discord.Intera
         req_history = member_in_voice_data.get_member_request_history(author)
         if req_permission:
             if command == AiTextGen.Patterns.STICK:
-                args = [lucky_member.name]
+                text = lucky_member.name
             request, text_to_speak = AiTextGen.get_ai_response_text(
                 pattern=command, 
-                data=' '.join(args), 
+                data=text, 
                 reqs_history=req_history
                 )
         else:
