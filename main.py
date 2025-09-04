@@ -49,7 +49,7 @@ async def on_voice_state_update(member: discord.Member, before: discord.VoiceSta
 
 @bot.tree.command(name='stick', description='draw a lucky stick')
 async def stick(interaction: discord.Interaction):
-    await _txt_commands(AiTextGen.Patterns.STICK, interaction)
+    await _txt_commands(AiTextGen.Patterns.STICK, interaction, 'Done')
 
 @bot.tree.command(name='clmbr', description='calambur announcement')
 async def clmbr(interaction: discord.Interaction, calambur: str):
