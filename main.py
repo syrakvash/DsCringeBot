@@ -46,7 +46,7 @@ async def on_voice_state_update(member: discord.Member, before: discord.VoiceSta
         await _bot_connect_to_channel_and_play(after.channel, mp3_filename_to_speak)
 
 @bot.tree.command(name='stick')
-async def stick(ctx: discord.ext.commands.Context):
+async def stick(ctx: discord.ext.commands.Context, interaction: discord.Interaction):
     await _txt_commands(AiTextGen.Patterns.STICK, ctx)
 
 @bot.command()
