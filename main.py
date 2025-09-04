@@ -21,6 +21,10 @@ cwd = os.getcwd()
 bot = commands.Bot(command_prefix=PREFIX, intents=intents)
 
 @bot.event
+async def on_ready():
+    await bot.tree.sync()
+
+@bot.event
 async def on_voice_state_update(member: discord.Member, before: discord.VoiceState, after: discord.VoiceState):
     if member.bot:
         return
@@ -41,7 +45,7 @@ async def on_voice_state_update(member: discord.Member, before: discord.VoiceSta
         mp3_filename_to_speak = AudioGen.generate_audio_from_text(AiTextGen.Patterns.GREETING, text_to_speak)
         await _bot_connect_to_channel_and_play(after.channel, mp3_filename_to_speak)
 
-@bot.command()
+@bot.tree.command(name='stick')
 async def stick(ctx: discord.ext.commands.Context):
     await _txt_commands(AiTextGen.Patterns.STICK, ctx)
 
@@ -92,6 +96,8 @@ def _get_a_lucky_random(channel: discord.VoiceChannel) -> discord.Member:
 async def _kick_lucky_random(member: discord.Member, ctx: discord.ext.commands.Context):
     accessible_channels = []
     for channel in ctx.guild.voice_channels:
+        if channel == member.voice.channel:
+            continue
         perms = channel.permissions_for(member)
         if perms.connect:
             accessible_channels.append(channel)
@@ -105,7 +111,7 @@ async def _kick_lucky_random(member: discord.Member, ctx: discord.ext.commands.C
     
 async def _bot_connect_to_channel_and_play(channel: discord.VoiceChannel, mp3_filename_to_speak):
     await channel.connect()
-    voice = discord.utils.get(bot.voice_clients)
+    voice: discord.VoiceClient = discord.utils.get(bot.voice_clients)
     voice.play(discord.FFmpegPCMAudio(executable="ffmpeg", source=mp3_filename_to_speak))
     while voice.is_playing():
         await asyncio.sleep(1)
