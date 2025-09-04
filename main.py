@@ -45,13 +45,13 @@ async def on_voice_state_update(member: discord.Member, before: discord.VoiceSta
         mp3_filename_to_speak = AudioGen.generate_audio_from_text(AiTextGen.Patterns.GREETING, text_to_speak)
         await _bot_connect_to_channel_and_play(after.channel, mp3_filename_to_speak)
 
-@bot.tree.command(name='stick', description='stick desctiption')
+@bot.tree.command(name='stick', description='draw a lucky stick')
 async def stick(interaction: discord.Interaction):
     await _txt_commands(AiTextGen.Patterns.STICK, interaction)
 
-# @bot.command()
-# async def clmbr(ctx: discord.ext.commands.Context, *args):
-#     await _txt_commands(AiTextGen.Patterns.CLMR, ctx, *args)
+@bot.command()
+async def clmbr(interaction: discord.Interaction, *args):
+    await _txt_commands(AiTextGen.Patterns.CLMR, interaction, *args)
 
 # @bot.command()
 # async def cringe(ctx: discord.ext.commands.Context, *args):
