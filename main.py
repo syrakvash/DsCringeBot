@@ -95,9 +95,8 @@ async def _kick_lucky_random(member: discord.Member, ctx: discord.ext.commands.C
         perms = channel.permissions_for(member)
         if perms.connect:
             accessible_channels.append(channel)
-            
+    
     punishments = [
-        lambda: member.timeout(datetime.timedelta(seconds=10)),
         lambda: member.move_to(random.choice(accessible_channels)),
         lambda: member.move_to(None)
     ]
