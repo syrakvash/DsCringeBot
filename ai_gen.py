@@ -24,7 +24,6 @@ def get_ai_response_text(**kwargs):
             {'role': 'user', 'content': request_text}
         ]
     )
-    completion.choices
     message_to_return = completion.choices[0].message.content.strip('"')
     print(message_to_return)
     return request_text, message_to_return
