@@ -24,6 +24,8 @@ bot = commands.Bot(command_prefix=PREFIX, intents=intents)
 async def on_ready():
     await bot.tree.sync()
 
+    print('bot is ready')
+
 @bot.event
 async def on_voice_state_update(member: discord.Member, before: discord.VoiceState, after: discord.VoiceState):
     if member.bot:
@@ -51,7 +53,7 @@ async def stick(interaction: discord.Interaction):
 
 @bot.tree.command(name='clmbr', description='calambur announcement')
 async def clmbr(interaction: discord.Interaction, text: str):
-    await _txt_commands(AiTextGen.Patterns.CLMR, interaction, text)
+    await _txt_commands(AiTextGen.Patterns.CLMBR, interaction, text)
 
 # @bot.command()
 # async def cringe(ctx: discord.ext.commands.Context, *args):

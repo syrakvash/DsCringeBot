@@ -11,7 +11,7 @@ class Patterns(Enum):
     GREETING = "Greeting"
     CRINGE = "Cringe"
     ACRINGE = "ACringe"
-    CLMR = "Clmbr"
+    CLMBR = "Clmbr"
     BANNED = "Banned"
     STICK = "Stick"
 
@@ -41,7 +41,7 @@ def __generate_request_text__(**kwargs):
             extra_req_data = kwargs.get('data', None)
             text_request = TextPatterns.CRING_PATTERN.replace(TextPatterns.REPLACEEXTRADATA, '') \
                 if not extra_req_data else TextPatterns.CRING_PATTERN.replace(TextPatterns.REPLACEEXTRADATA, extra_req_data)
-        case Patterns.CLMR:
+        case Patterns.CLMBR:
             extra_req_data = kwargs.get('data', None)
             text_request = TextPatterns.CLMBR_PATTERN.replace(TextPatterns.REPLACEEXTRADATA, '') \
                 if not extra_req_data else TextPatterns.CLMBR_PATTERN.replace(TextPatterns.REPLACEEXTRADATA, extra_req_data)
