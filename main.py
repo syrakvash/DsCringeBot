@@ -84,7 +84,7 @@ async def _txt_commands(command: AiTextGen.Patterns, ctx:discord.ext.commands.Co
         mp3_filename_to_speak = AudioGen.generate_audio_from_text(command, text_to_speak)
         await _bot_connect_to_channel_and_play(author.voice.channel, mp3_filename_to_speak)
         if command == AiTextGen.Patterns.STICK:
-            await _kick_lucky_random(lucky_member)
+            await _kick_lucky_random(lucky_member, ctx)
 
 def _get_a_lucky_random(channel: discord.VoiceChannel) -> discord.Member:
     return random.choice(channel.members)
