@@ -4,13 +4,9 @@ import asyncio
 import logging
 import os
 import random
-import datetime
-
-import discord.ext.commands
 
 import ai_gen as AiTextGen
 import audio_gen as AudioGen
-import discord.ext
 from member_data import MembersInVoiceData
 
 TOKEN = 'DSBOTTOKEN'
