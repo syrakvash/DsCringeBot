@@ -59,8 +59,8 @@ async def cringe(interaction: discord.Interaction, cringe: str):
 async def acringe(interaction: discord.Interaction, acringe: str):
     await _txt_commands(AiTextGen.Patterns.ACRINGE, interaction, acringe)
 
-@bot.tree.command(name='clean', description='serious stuff')
-async def clean(interaction: discord.Interaction, acringe: str):
+@bot.tree.command(name='clean', description='true speech')
+async def clean(interaction: discord.Interaction, clean: str):
     await _txt_commands(AiTextGen.Patterns.ACRINGE, interaction, acringe)
 
 async def _txt_commands(command: AiTextGen.Patterns, interaction: discord.Interaction, text: str):
