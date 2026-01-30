@@ -58,5 +58,5 @@ def __generate_request_text__(**kwargs):
             extra_req_data = kwargs.get('data', None)
             text_request = TextPatterns.STICK_PATTERN.replace(TextPatterns.REPLACEEXTRADATA, '') \
                 if not extra_req_data else TextPatterns.STICK_PATTERN.replace(TextPatterns.REPLACEEXTRADATA, extra_req_data)
-    print(text_request)
+    print(f"{kwargs['pattern']}: {text_request}")
     return text_request
