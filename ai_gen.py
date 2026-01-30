@@ -14,6 +14,7 @@ class Patterns(Enum):
     CLMBR = "Clmbr"
     BANNED = "Banned"
     STICK = "Stick"
+    CLEAN = "Clean"
 
 def get_ai_response_text(**kwargs):
     client = OpenAI(api_key=os.getenv(ENV_OPEN_API_KEY))
@@ -48,6 +49,9 @@ def __generate_request_text__(**kwargs):
             extra_req_data = kwargs.get('data', None)
             text_request = TextPatterns.ACRING_PATTERN.replace(TextPatterns.REPLACEEXTRADATA, '') \
                 if not extra_req_data else TextPatterns.ACRING_PATTERN.replace(TextPatterns.REPLACEEXTRADATA, extra_req_data)
+        case Patterns.CLEAN:
+            extra_req_data = kwargs.get('data', None)
+            text_request = extra_req_data
         case Patterns.STICK:
             extra_req_data = kwargs.get('data', None)
             text_request = TextPatterns.STICK_PATTERN.replace(TextPatterns.REPLACEEXTRADATA, '') \
