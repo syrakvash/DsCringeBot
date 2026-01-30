@@ -75,9 +75,9 @@ async def _txt_commands(command: AiTextGen.Patterns, interaction: discord.Intera
         if req_permission:
             if command == AiTextGen.Patterns.STICK:
                 text = lucky_member.name
-                request, text_to_speak = AiTextGen.get_ai_response_text(
-                    pattern=command, data=text, reqs_history=req_history
-                )
+            request, text_to_speak = AiTextGen.get_ai_response_text(
+                pattern=command, data=text, reqs_history=req_history
+            )
         else:
             command = AiTextGen.Patterns.BANNED
             request, text_to_speak = AiTextGen.get_ai_response_text(
