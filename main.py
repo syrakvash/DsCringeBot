@@ -61,7 +61,7 @@ async def acringe(interaction: discord.Interaction, acringe: str):
 
 @bot.tree.command(name='clean', description='true speech')
 async def clean(interaction: discord.Interaction, clean: str):
-    await _txt_commands(AiTextGen.Patterns.ACRINGE, interaction, clean)
+    await _txt_commands(AiTextGen.Patterns.CLEAN, interaction, clean)
 
 async def _txt_commands(command: AiTextGen.Patterns, interaction: discord.Interaction, text: str):
     await interaction.response.send_message(text)
