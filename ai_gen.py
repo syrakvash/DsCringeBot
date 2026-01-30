@@ -14,17 +14,21 @@ class Patterns(Enum):
     CLMBR = "Clmbr"
     BANNED = "Banned"
     STICK = "Stick"
+    CLEAN = "Clean"
 
 def get_ai_response_text(**kwargs):
     client = OpenAI(api_key=os.getenv(ENV_OPEN_API_KEY))
     request_text = __generate_request_text__(**kwargs)
-    completion = client.chat.completions.create(
-        model=GPT_MODEL,
-        messages=kwargs.get('reqs_history', []) + [
-            {'role': 'user', 'content': request_text}
-        ]
-    )
-    message_to_return = completion.choices[0].message.content.strip('"')
+    if kwargs["pattern"] == Patterns.CLEAN:
+        message_to_return = request_text
+    else:
+        completion = client.chat.completions.create(
+            model=GPT_MODEL,
+            messages=kwargs.get('reqs_history', []) + [
+                {'role': 'user', 'content': request_text}
+            ]
+        )
+        message_to_return = completion.choices[0].message.content.strip('"')
     print(message_to_return)
     return request_text, message_to_return
 
@@ -48,9 +52,11 @@ def __generate_request_text__(**kwargs):
             extra_req_data = kwargs.get('data', None)
             text_request = TextPatterns.ACRING_PATTERN.replace(TextPatterns.REPLACEEXTRADATA, '') \
                 if not extra_req_data else TextPatterns.ACRING_PATTERN.replace(TextPatterns.REPLACEEXTRADATA, extra_req_data)
+        case Patterns.CLEAN:
+            text_request = kwargs.get('data', None)
         case Patterns.STICK:
             extra_req_data = kwargs.get('data', None)
             text_request = TextPatterns.STICK_PATTERN.replace(TextPatterns.REPLACEEXTRADATA, '') \
                 if not extra_req_data else TextPatterns.STICK_PATTERN.replace(TextPatterns.REPLACEEXTRADATA, extra_req_data)
-    print(text_request)
+    print(f"{kwargs['pattern']}: {text_request}")
     return text_request
