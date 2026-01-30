@@ -78,13 +78,13 @@ async def _txt_commands(command: AiTextGen.Patterns, interaction: discord.Intera
                 request, text_to_speak = AiTextGen.get_ai_response_text(
                     pattern=command, data=text, reqs_history=req_history
                 )
-            else:
-                command = AiTextGen.Patterns.BANNED
-                request, text_to_speak = AiTextGen.get_ai_response_text(
-                    pattern=command,
-                    member_nick=author.display_name,
-                    reqs_history=req_history,
-                )
+        else:
+            command = AiTextGen.Patterns.BANNED
+            request, text_to_speak = AiTextGen.get_ai_response_text(
+                pattern=command,
+                member_nick=author.display_name,
+                reqs_history=req_history,
+            )
         member_in_voice_data.update_member_request_history(author, request, text_to_speak)
         mp3_filename_to_speak = AudioGen.generate_audio_from_text(command, text_to_speak)
         await _bot_connect_to_channel_and_play(author.voice.channel, mp3_filename_to_speak)
