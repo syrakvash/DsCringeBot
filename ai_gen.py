@@ -19,13 +19,16 @@ class Patterns(Enum):
 def get_ai_response_text(**kwargs):
     client = OpenAI(api_key=os.getenv(ENV_OPEN_API_KEY))
     request_text = __generate_request_text__(**kwargs)
-    completion = client.chat.completions.create(
-        model=GPT_MODEL,
-        messages=kwargs.get('reqs_history', []) + [
-            {'role': 'user', 'content': request_text}
-        ]
-    )
-    message_to_return = completion.choices[0].message.content.strip('"')
+    if kwargs["pattern"] == Patterns.CLEAN:
+        message_to_return = request_text
+    else:
+        completion = client.chat.completions.create(
+            model=GPT_MODEL,
+            messages=kwargs.get('reqs_history', []) + [
+                {'role': 'user', 'content': request_text}
+            ]
+        )
+        message_to_return = completion.choices[0].message.content.strip('"')
     print(message_to_return)
     return request_text, message_to_return
 
@@ -50,8 +53,7 @@ def __generate_request_text__(**kwargs):
             text_request = TextPatterns.ACRING_PATTERN.replace(TextPatterns.REPLACEEXTRADATA, '') \
                 if not extra_req_data else TextPatterns.ACRING_PATTERN.replace(TextPatterns.REPLACEEXTRADATA, extra_req_data)
         case Patterns.CLEAN:
-            extra_req_data = kwargs.get('data', None)
-            text_request = extra_req_data
+            text_request = kwargs.get('data', None)
         case Patterns.STICK:
             extra_req_data = kwargs.get('data', None)
             text_request = TextPatterns.STICK_PATTERN.replace(TextPatterns.REPLACEEXTRADATA, '') \
