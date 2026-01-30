@@ -59,6 +59,10 @@ async def cringe(interaction: discord.Interaction, cringe: str):
 async def acringe(interaction: discord.Interaction, acringe: str):
     await _txt_commands(AiTextGen.Patterns.ACRINGE, interaction, acringe)
 
+@bot.tree.command(name='clean', description='true speech')
+async def clean(interaction: discord.Interaction, clean: str):
+    await _txt_commands(AiTextGen.Patterns.CLEAN, interaction, clean)
+
 async def _txt_commands(command: AiTextGen.Patterns, interaction: discord.Interaction, text: str):
     await interaction.response.send_message(text)
     author = interaction.user
@@ -72,17 +76,15 @@ async def _txt_commands(command: AiTextGen.Patterns, interaction: discord.Intera
             if command == AiTextGen.Patterns.STICK:
                 text = lucky_member.name
             request, text_to_speak = AiTextGen.get_ai_response_text(
-                pattern=command, 
-                data=text, 
-                reqs_history=req_history
-                )
+                pattern=command, data=text, reqs_history=req_history
+            )
         else:
             command = AiTextGen.Patterns.BANNED
             request, text_to_speak = AiTextGen.get_ai_response_text(
-                pattern=command, 
-                member_nick=author.display_name, 
-                reqs_history=req_history
-                )
+                pattern=command,
+                member_nick=author.display_name,
+                reqs_history=req_history,
+            )
         member_in_voice_data.update_member_request_history(author, request, text_to_speak)
         mp3_filename_to_speak = AudioGen.generate_audio_from_text(command, text_to_speak)
         await _bot_connect_to_channel_and_play(author.voice.channel, mp3_filename_to_speak)
