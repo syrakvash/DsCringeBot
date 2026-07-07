@@ -30,18 +30,20 @@ async def on_voice_state_update(member: discord.Member, before: discord.VoiceSta
     if after.channel is None:
         member_in_voice_data.remove_member(member)
         return
-    if (before.channel is None and after.channel) or (before.channel and after.channel):
-        if before.channel is None:
+    joined_fresh = before.channel is None and after.channel is not None
+    changed_channel = (before.channel and after.channel) and (before.channel.id != after.channel.id)
+
+    if joined_fresh or changed_channel:
+        if joined_fresh:
             member_in_voice_data.add_member(member)
-        elif (after.afk or after.mute or after.self_mute or after.self_deaf or after.self_stream or after.self_video) \
-            or (before.self_mute or before.self_deaf or before.self_stream or before.self_video):
-            return
         else:
             member_in_voice_data.update_member(member)
         request, text_to_speak = AiTextGen.get_ai_response_text(pattern=AiTextGen.Patterns.GREETING, member_nick=member.display_name)
         member_in_voice_data.update_member_request_history(member, request, text_to_speak)
         mp3_filename_to_speak = AudioGen.generate_audio_from_text(AiTextGen.Patterns.GREETING, text_to_speak)
         await _bot_connect_to_channel_and_play(after.channel, mp3_filename_to_speak)
+    else:
+        return
 
 @bot.tree.command(name='stick', description='draw a lucky stick')
 async def stick(interaction: discord.Interaction):
