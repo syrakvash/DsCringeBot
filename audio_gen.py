@@ -1,8 +1,6 @@
 from gtts import gTTS
 import os
 
-from ai_gen import Patterns
-
 MP3_FOLDER = 'mp3_temp'
 
 def generate_audio_from_text(pattern, text):
