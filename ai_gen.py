@@ -5,7 +5,7 @@ import os
 import text_patterns as TextPatterns
 
 ENV_OPEN_API_KEY = 'OPEN_API_KEY'
-GPT_MODEL = 'gpt-6-luna'
+GPT_MODEL = 'gpt-4o-mini'
 
 class Patterns(Enum):
     GREETING = "Greeting"
