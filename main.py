@@ -115,7 +115,17 @@ async def _bot_connect_to_channel_and_play(
     channel: discord.VoiceChannel, mp3_filename_to_speak
 ):
     voice = await channel.connect()
+    print(
+        "[VOICE DEBUG] UDP local:",
+        voice.socket.getsockname(),
+        flush=True
+    )
 
+    print(
+        "[VOICE DEBUG] UDP remote:",
+        voice.socket.getpeername(),
+        flush=True
+    )
     packet_count = 0
     original_send = voice.send_audio_packet
 
