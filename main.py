@@ -114,7 +114,11 @@ async def _kick_lucky_random(member: discord.Member, interaction: discord.Intera
 async def _bot_connect_to_channel_and_play(channel: discord.VoiceChannel, mp3_filename_to_speak):
     await channel.connect()
     voice: discord.VoiceClient = discord.utils.get(bot.voice_clients)
-    voice.play(discord.FFmpegPCMAudio(executable="ffmpeg", source=mp3_filename_to_speak))
+    audio: discord.player.FFmpegOpusAudio = await discord.FFmpegOpusAudio.from_probe(
+        mp3_filename_to_speak, executable="ffmpeg"
+    )
+    voice.play(audio)
+    # voice.play(discord.FFmpegPCMAudio(executable="ffmpeg", source=mp3_filename_to_speak))
     while voice.is_playing():
         await asyncio.sleep(1)
     await voice.disconnect()
