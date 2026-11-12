@@ -127,7 +127,23 @@ async def _bot_connect_to_channel_and_play(
         if packet_count % 50 == 0:
             print(f"[VOICE DEBUG] Audio packets: {packet_count}", flush=True)
 
-        return original_send(data, encode=encode)
+        try:
+            result = original_send(data, encode=encode)
+
+            if packet_count % 50 == 0:
+                print(
+                    f"[VOICE DEBUG] UDP send succeeded: {packet_count}",
+                    flush=True
+                )
+
+            return result
+
+        except Exception as e:
+            print(
+                f"[VOICE ERROR] UDP send failed: {repr(e)}",
+                flush=True
+            )
+            raise
 
     voice.send_audio_packet = debug_send_audio_packet
 
