@@ -111,16 +111,45 @@ async def _kick_lucky_random(member: discord.Member, interaction: discord.Intera
     rnd_punish = random.choice(punishments)
     await rnd_punish()
     
-async def _bot_connect_to_channel_and_play(channel: discord.VoiceChannel, mp3_filename_to_speak):
-    await channel.connect()
-    voice: discord.VoiceClient = discord.utils.get(bot.voice_clients)
-    audio: discord.player.FFmpegOpusAudio = await discord.FFmpegOpusAudio.from_probe(
-        mp3_filename_to_speak, executable="ffmpeg"
-    )
-    voice.play(audio)
-    # voice.play(discord.FFmpegPCMAudio(executable="ffmpeg", source=mp3_filename_to_speak))
-    while voice.is_playing():
-        await asyncio.sleep(1)
-    await voice.disconnect()
+async def _bot_connect_to_channel_and_play(
+    channel: discord.VoiceChannel, mp3_filename_to_speak
+):
+    voice = await channel.connect()
+
+    packet_count = 0
+    original_send = voice.send_audio_packet
+
+    def debug_send_audio_packet(data, *, encode=True):
+        nonlocal packet_count
+
+        packet_count += 1
+
+        if packet_count % 50 == 0:
+            print(f"[VOICE DEBUG] Audio packets: {packet_count}", flush=True)
+
+        return original_send(data, encode=encode)
+
+    voice.send_audio_packet = debug_send_audio_packet
+
+    try:
+        audio = await discord.FFmpegOpusAudio.from_probe(
+            mp3_filename_to_speak, executable="ffmpeg"
+        )
+
+        def after_playing(error):
+            if error:
+                print(f"[VOICE ERROR] {error}", flush=True)
+            else:
+                print("[VOICE DEBUG] Playback finished", flush=True)
+
+        voice.play(audio, after=after_playing)
+
+        while voice.is_playing():
+            await asyncio.sleep(0.2)
+
+        print(f"[VOICE DEBUG] Total audio packets: {packet_count}", flush=True)
+
+    finally:
+        await voice.disconnect()
 
 bot.run(os.getenv(TOKEN), log_level=logging.DEBUG)
