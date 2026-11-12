@@ -4,6 +4,7 @@ WORKDIR /app
 
 RUN apt-get update && apt-get install -y ffmpeg && rm -rf /var/lib/apt/lists/*
 
+ENV PYTHONUNBUFFERED=1
 ENV PATH="/usr/bin:${PATH}"
 
 COPY requirements.txt .
